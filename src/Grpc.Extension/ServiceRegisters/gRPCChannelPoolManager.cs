@@ -63,15 +63,20 @@ namespace Grpc.Extension
             }
             else
             {
-                _logger.Debug("direct connect:" + this.RemoteServiceOption.ServiceAddress);
-                var addressList = this.RemoteServiceOption.ServiceAddress.Split(',');
-                foreach (var address in addressList)
-                {
-                    if (string.IsNullOrWhiteSpace(address)) continue;
+                InitDirectConnectChannel();
+            }
+        }
 
-                    var hostIp = address.Split(':');
-                    AddGrpcChannel(hostIp[0], int.Parse(hostIp[1]), new AgentService { ID = $"direct:{address}" });
-                }
+        private void InitDirectConnectChannel()
+        {
+            _logger.Debug("direct connect:" + this.RemoteServiceOption.ServiceAddress);
+            var addressList = this.RemoteServiceOption.ServiceAddress.Split(',');
+            foreach (var address in addressList)
+            {
+                if (string.IsNullOrWhiteSpace(address)) continue;
+
+                var hostIp = address.Split(':');
+                AddGrpcChannel(hostIp[0], int.Parse(hostIp[1]), new AgentService { ID = $"direct:{address}" });
             }
         }
 
@@ -186,7 +191,14 @@ namespace Grpc.Extension
             // download service list
             if (ConnectedAgentServiceChannels.Count == 0)
             {
-                DownLoadServiceListAsync().Wait(); //sync
+                if (RemoteServiceOption.ConsulIntegration)
+                {
+                    DownLoadServiceListAsync().Wait(); //sync
+                }
+                else
+                {
+                    InitDirectConnectChannel();
+                }
             }
 
             if (ConnectedAgentServiceChannels.Count == 0)
