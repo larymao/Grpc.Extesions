@@ -214,6 +214,21 @@ namespace Grpc.Extension
         /// <returns></returns>
         internal bool CheckAndProcessChannelStatus(AgentServiceChannelPair choosePair)
         {
+    //        if (!RemoteServiceOption.ConsulIntegration)
+    //        {
+    //            Console.WriteLine(
+    //$"当前Channel异常,状态：{choosePair.Channel.State}  ServiceId:{choosePair.AgentService.ID} ,已经被移除");
+
+    //            // choosePair.Channel.ShutdownAsync().Wait();
+    //            ConnectedAgentServiceChannels.Remove(choosePair);
+    //            InitDirectConnectChannel();
+
+    //            //_logger.Error(
+    //            //    $"当前Channel异常,状态：{choosePair.Channel.State}  ServiceId:{choosePair.AgentService.ID} ,已经被移除");
+    //            return true;
+    //        }
+
+
             //当channel相关的service shutdown之后,该状态一直会处于connecting的状态
             //如果此时采用的是random port,问题比较严重
             //所以,一旦服务检测到挂了之后,就直接清除该connection

@@ -56,6 +56,7 @@ namespace Grpc.Extension.LoadBalancer
                     Interlocked.Exchange(ref _roundProxyIndex, 0);
                     goto fetch;
                 }
+                //choosePair = pool.ConnectedAgentServiceChannels[_roundProxyIndex];
 
                 Interlocked.Increment(ref _roundProxyIndex);
 
